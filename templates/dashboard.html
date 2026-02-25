@@ -184,7 +184,6 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Precio Mensual</th>
                             <th>Duración</th>
@@ -196,15 +195,6 @@
                         {% for plan in planes %}
                         <tr>
                             <td>{{ plan.id_plan }}</td>
-                            <td>
-                                {% if plan.imagen %}
-                                <img src="{{ url_for('imagen_plan', id_plan=plan.id_plan) }}"
-                                     alt="{{ plan.nombre }}"
-                                     style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid #e0e0e0;">
-                                {% else %}
-                                <span style="color:#bbb;font-size:1.4rem;">🖼️</span>
-                                {% endif %}
-                            </td>
                             <td><strong>{{ plan.nombre }}</strong></td>
                             <td>${{ "%.2f"|format(plan.precio_mensual) }}</td>
                             <td>{{ plan.duracion_meses }} mes(es)</td>
@@ -242,7 +232,6 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Categoría</th>
                             <th>Precio</th>
@@ -254,15 +243,6 @@
                         {% for producto in productos %}
                         <tr>
                             <td>{{ producto.id }}</td>
-                            <td>
-                                {% if producto.tiene_imagen %}
-                                <img src="{{ url_for('imagen_producto', id_producto=producto.id) }}"
-                                     alt="{{ producto.nombre }}"
-                                     style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid #e0e0e0;">
-                                {% else %}
-                                <span style="color:#bbb;font-size:1.4rem;">🖼️</span>
-                                {% endif %}
-                            </td>
                             <td><strong>{{ producto.nombre }}</strong></td>
                             <td>{{ producto.categoria }}</td>
                             <td>${{ producto.precio }}</td>
@@ -300,7 +280,6 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Foto</th>
                             <th>Nombre</th>
                             <th>Especialidad</th>
                             <th>Experiencia</th>
@@ -312,17 +291,6 @@
                         {% for entrenador in entrenadores %}
                         <tr>
                             <td>{{ entrenador.id }}</td>
-                            <td>
-                                {% if entrenador.tiene_imagen %}
-                                <img src="{{ url_for('imagen_entrenador', id_entrenador=entrenador.id) }}"
-                                     alt="{{ entrenador.nombre }}"
-                                     style="width:50px;height:50px;object-fit:cover;border-radius:50%;border:2px solid var(--primary-color);">
-                                {% else %}
-                                <div style="width:50px;height:50px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#bbb;">
-                                    👤
-                                </div>
-                                {% endif %}
-                            </td>
                             <td><strong>{{ entrenador.nombre }}</strong></td>
                             <td>{{ entrenador.especialidad }}</td>
                             <td>{{ entrenador.experiencia }}</td>
