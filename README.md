@@ -16,7 +16,7 @@ New Life Gym es una plataforma web moderna y funcional que permite gestionar tod
 - Página de inicio con hero a pantalla completa con vídeo `.mp4` de fondo
 - Páginas interiores con hero de vídeo independiente por página
 - Membresías con planes y beneficios dinámicos desde la BD
-- Tienda de suplementos con imágenes reales y carrito de compra
+- Tienda de suplementos con imágenes reales
 - Página de entrenadores con fotos personalizadas desde la BD
 - Galería interactiva con lightbox (fotos ampliadas al hacer clic)
 - Página de compra exitosa para membresías y productos
@@ -27,7 +27,7 @@ New Life Gym es una plataforma web moderna y funcional que permite gestionar tod
 - Login seguro con sesión Flask
 - Dashboard con estadísticas en tiempo real
 - CRUD completo: Miembros, Membresías, Planes, Entrenadores, Productos
-- Subida de imágenes personalizadas para entrenadores, productos y planes
+- Subida de imágenes personalizadas para entrenadores y productos
 - Imágenes almacenadas como BYTEA en PostgreSQL (Neon), sin archivos locales
 - Cambio de plan de membresía desde el dashboard
 
@@ -104,12 +104,11 @@ La aplicación usa **PostgreSQL** alojado en [Neon](https://neon.tech). La funci
 | `entrenador` | Entrenadores con foto almacenada en BD (BYTEA) |
 | `producto` | Productos de la tienda con imagen en BD (BYTEA) |
 
-### Rutas de imágenes (servidas directamente desde la BD)
+Las imágenes de entrenadores y productos se sirven directamente desde la BD:
 
 ```
 /imagen/entrenador/<id>
 /imagen/producto/<id>
-/imagen/plan/<id>
 ```
 
 ---
@@ -262,4 +261,4 @@ psycopg2-binary
 
 ---
 
-*New Life Gym © 2025 — Todos los derechos reservados*
+*New Life Gym © 2026 — Todos los derechos reservados*

@@ -61,10 +61,7 @@ def init_db():
             )
         """)
 
-        # ── Columnas imagen en tabla plan (si no existen) ────────────────
-        cur.execute("ALTER TABLE plan ADD COLUMN IF NOT EXISTS imagen      BYTEA")
-        cur.execute("ALTER TABLE plan ADD COLUMN IF NOT EXISTS imagen_mime VARCHAR(50)")
-
+        # ── Columnas imagen en tabla entrenador y producto (si no existen) ──
         conn.commit()
 
         # ── Poblar entrenadores iniciales ────────────────────────────────
@@ -140,22 +137,6 @@ def imagen_entrenador(id_entrenador):
     except:
         return "", 404
 
-@app.route("/imagen/plan/<int:id_plan>")
-def imagen_plan(id_plan):
-    conn = get_db_connection()
-    if not conn:
-        return "", 404
-    try:
-        cur = conn.cursor()
-        cur.execute("SELECT imagen, imagen_mime FROM plan WHERE id_plan = %s", (id_plan,))
-        row = cur.fetchone()
-        cur.close(); conn.close()
-        if row and row[0]:
-            return Response(bytes(row[0]), mimetype=row[1] or 'image/jpeg')
-        return "", 404
-    except:
-        return "", 404
-
 @app.route("/imagen/producto/<int:id_producto>")
 def imagen_producto(id_producto):
     conn = get_db_connection()
@@ -218,8 +199,7 @@ def membresias():
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute("""
             SELECT id_plan, nombre, descripcion, precio_mensual,
-                   beneficios, duracion_meses, activo,
-                   (imagen IS NOT NULL) AS imagen
+                   beneficios, duracion_meses, activo
             FROM plan WHERE activo = TRUE ORDER BY precio_mensual
         """)
         planes = cur.fetchall()
@@ -610,15 +590,14 @@ def crear_plan():
         conn = get_db_connection()
         if conn:
             try:
-                imagen_bytes, imagen_mime = leer_imagen()
                 cur = conn.cursor()
                 cur.execute("""
                     INSERT INTO plan
-                    (nombre,descripcion,precio_mensual,beneficios,duracion_meses,activo,imagen,imagen_mime)
-                    VALUES (%s,%s,%s,%s,%s,TRUE,%s,%s)
+                    (nombre,descripcion,precio_mensual,beneficios,duracion_meses,activo)
+                    VALUES (%s,%s,%s,%s,%s,TRUE)
                 """, (request.form.get('nombre'), request.form.get('descripcion'),
                       request.form.get('precio_mensual'), request.form.get('beneficios'),
-                      request.form.get('duracion_meses'), imagen_bytes, imagen_mime))
+                      request.form.get('duracion_meses')))
                 conn.commit(); cur.close(); conn.close()
                 flash('Plan creado exitosamente','success')
                 return redirect(url_for('admin_dashboard'))
@@ -634,25 +613,14 @@ def editar_plan(id_plan):
 
     if request.method == "POST":
         try:
-            imagen_bytes, imagen_mime = leer_imagen()
             activo = request.form.get('activo') == 'on'
             cur = conn.cursor()
-            if imagen_bytes:
-                cur.execute("""
-                    UPDATE plan SET nombre=%s,descripcion=%s,precio_mensual=%s,
-                    beneficios=%s,duracion_meses=%s,activo=%s,imagen=%s,imagen_mime=%s
-                    WHERE id_plan=%s
-                """, (request.form.get('nombre'), request.form.get('descripcion'),
-                      request.form.get('precio_mensual'), request.form.get('beneficios'),
-                      request.form.get('duracion_meses'), activo,
-                      imagen_bytes, imagen_mime, id_plan))
-            else:
-                cur.execute("""
-                    UPDATE plan SET nombre=%s,descripcion=%s,precio_mensual=%s,
-                    beneficios=%s,duracion_meses=%s,activo=%s WHERE id_plan=%s
-                """, (request.form.get('nombre'), request.form.get('descripcion'),
-                      request.form.get('precio_mensual'), request.form.get('beneficios'),
-                      request.form.get('duracion_meses'), activo, id_plan))
+            cur.execute("""
+                UPDATE plan SET nombre=%s,descripcion=%s,precio_mensual=%s,
+                beneficios=%s,duracion_meses=%s,activo=%s WHERE id_plan=%s
+            """, (request.form.get('nombre'), request.form.get('descripcion'),
+                  request.form.get('precio_mensual'), request.form.get('beneficios'),
+                  request.form.get('duracion_meses'), activo, id_plan))
             conn.commit(); cur.close(); conn.close()
             flash('Plan actualizado','success')
             return redirect(url_for('admin_dashboard'))
@@ -663,7 +631,7 @@ def editar_plan(id_plan):
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute("""
             SELECT id_plan,nombre,descripcion,precio_mensual,beneficios,
-                   duracion_meses,activo,(imagen IS NOT NULL) AS imagen
+                   duracion_meses,activo
             FROM plan WHERE id_plan=%s
         """, (id_plan,))
         plan = cur.fetchone()
