@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error del Servidor - New Life Gym</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="New Life Gym Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Inicio</a></li>
+                <li><a href="{{ url_for('membresias') }}">Membresías</a></li>
+                <li><a href="{{ url_for('tienda') }}">Tienda</a></li>
+                <li><a href="{{ url_for('entrenadores_page') }}">Entrenadores</a></li>
+                <li><a href="{{ url_for('galeria') }}">Galería</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO DE ERROR 500 -->
+    <div class="error-container">
+        <div class="error-code">500</div>
+        
+        <h1 style="font-size: 2.5rem; color: #1a1a1a; margin: 1rem 0;">
+            Error Interno del Servidor
+        </h1>
+        
+        <p style="font-size: 1.2rem; color: #333; max-width: 600px; margin: 1rem auto 2rem;">
+            ¡Ups! Algo salió mal en nuestro lado. Estamos trabajando para solucionarlo.
+        </p>
+
+        <!-- MENSAJE MOTIVACIONAL -->
+        <div style="max-width: 600px; margin: 3rem auto;">
+            <div class="card" style="background: linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(255, 107, 0, 0.05) 100%); text-align: center; padding: 2rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">💪</div>
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                    "Un error es solo una oportunidad para mejorar"
+                </h3>
+                <p style="color: #333; font-size: 1.1rem; line-height: 1.8;">
+                    Como en el gimnasio, a veces fallamos antes de tener éxito. 
+                    Nuestro equipo técnico ya está trabajando en esto. 
+                    Por favor, intenta nuevamente en unos momentos.
+                </p>
+            </div>
+        </div>
+
+        <!-- QUÉ HACER -->
+        <div style="max-width: 700px; margin: 3rem auto;">
+            <h3 style="color: var(--primary-color); text-align: center; margin-bottom: 2rem;">
+                ¿Qué puedes hacer?
+            </h3>
+            
+            <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔄</div>
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Recargar</h4>
+                    <p style="color: #333; font-size: 0.9rem;">Intenta recargar la página en unos segundos</p>
+                </div>
+
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏠</div>
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Volver al Inicio</h4>
+                    <p style="color: #333; font-size: 0.9rem;">Regresa a la página principal</p>
+                </div>
+
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📞</div>
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Contactarnos</h4>
+                    <p style="color: #333; font-size: 0.9rem;">Si el problema persiste, avísanos</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFORMACIÓN TÉCNICA -->
+        <div style="max-width: 600px; margin: 3rem auto;">
+            <div class="card" style="background: var(--card-bg); padding: 2rem;">
+                <h4 style="color: var(--primary-color); margin-bottom: 1rem; text-align: center;">
+                    ℹ️ Información del Error
+                </h4>
+                <p style="color: #333; text-align: center; line-height: 1.8;">
+                    Este es un error temporal del servidor. Nuestro equipo ha sido notificado 
+                    automáticamente y está trabajando en la solución. 
+                </p>
+                <p style="color: #333; text-align: center; margin-top: 1rem; font-size: 0.9rem;">
+                    Código de error: 500 - Internal Server Error
+                </p>
+            </div>
+        </div>
+
+        <!-- BOTONES DE ACCIÓN -->
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 3rem;">
+            <button onclick="location.reload()" class="btn" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+                🔄 Recargar Página
+            </button>
+            <a href="{{ url_for('home') }}" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+                🏠 Volver al Inicio
+            </a>
+        </div>
+
+        <!-- INFORMACIÓN DE CONTACTO -->
+        <div style="margin-top: 4rem; padding: 2rem; background: var(--card-bg); border-radius: var(--border-radius); max-width: 500px; margin-left: auto; margin-right: auto;">
+            <h4 style="color: var(--primary-color); margin-bottom: 1rem; text-align: center;">
+                ¿El problema persiste?
+            </h4>
+            <p style="color: #333; text-align: center; margin-bottom: 1.5rem;">
+                Contacta a nuestro equipo de soporte
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.8rem; color: #333;">
+                <div style="text-align: center;">📞 Teléfono: (123) 456-7890</div>
+                <div style="text-align: center;">📧 Email: info@newlifegym.com</div>
+                <div style="text-align: center;">💬 WhatsApp: +57 123 456 7890</div>
+            </div>
+            <p style="color: #333; text-align: center; margin-top: 1.5rem; font-size: 0.85rem;">
+                Horario de atención: Lunes a Viernes, 9:00 AM - 6:00 PM
+            </p>
+        </div>
+
+        <!-- ESTADO DEL SISTEMA -->
+        <div style="max-width: 600px; margin: 3rem auto;">
+            <div class="card" style="background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4CAF50; padding: 1.5rem;">
+                <h4 style="color: #4CAF50; margin-bottom: 0.5rem; text-align: center;">
+                    ✓ Estado del Sistema
+                </h4>
+                <p style="color: #333; text-align: center; font-size: 0.9rem;">
+                    Todos nuestros servicios están operativos. Este error es temporal.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="margin-top: 4rem;">
+        <p>&copy; 2025 New Life Gym. Todos los derechos reservados.</p>
+        <p>Dirección: Av. Principal #123, Ciudad | Teléfono: (123) 456-7890</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

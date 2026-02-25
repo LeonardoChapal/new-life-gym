@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membresías - New Life Gym</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="New Life Gym Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Inicio</a></li>
+                <li><a href="{{ url_for('membresias') }}" class="active">Membresías</a></li>
+                <li><a href="{{ url_for('tienda') }}">Tienda</a></li>
+                <li><a href="{{ url_for('entrenadores_page') }}">Entrenadores</a></li>
+                <li><a href="{{ url_for('galeria') }}">Galería</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HEADER DE MEMBRESÍAS -->
+    <section class="hero-inner">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="{{ url_for('static', filename='videos/hero-membresias.mp4') }}" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Planes de Membresía</h1>
+            <p>Elige el plan que mejor se adapte a tus necesidades y objetivos</p>
+        </div>
+    </section>
+
+    <!-- PLANES DE MEMBRESÍA -->
+    <section class="container">
+        <h2 class="section-title">Nuestros Planes</h2>
+        <p class="text-center" style="color: #444; margin-bottom: 3rem; font-size: 1.1rem;">
+            Todos los planes incluyen acceso a vestuarios, casilleros y Wi-Fi gratuito
+        </p>
+
+        <div class="cards-grid">
+            {% for plan in planes %}
+            <div class="card plan-card {% if plan.nombre == 'Premium' %}featured{% endif %}">
+                <h3>{{ plan.nombre }}</h3>
+                <div class="plan-price">
+                    ${{ "%.2f"|format(plan.precio_mensual) }}
+                    <span>/ mes</span>
+                </div>
+
+                {% if plan.descripcion %}
+                <p style="color: #666; margin: 1rem 0;">{{ plan.descripcion }}</p>
+                {% endif %}
+
+                {% if plan.beneficios %}
+                <ul style="text-align: left; margin: 1.5rem 0; list-style: none; padding: 0;">
+                    {# Normalizar separadores: reemplazar • y ; por salto de línea, luego iterar #}
+                    {% set lineas = plan.beneficios.replace('•', '\n').replace(';', '\n').split('\n') %}
+                    {% for linea in lineas %}
+                        {% if linea.strip() %}
+                        <li style="padding: 0.4rem 0; padding-left: 1.5rem; position: relative; color: #444;">
+                            <span style="position: absolute; left: 0; color: var(--primary-color); font-weight: bold;">✓</span>
+                            {{ linea.strip() }}
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <form action="{{ url_for('comprar_membresia', plan_id=plan.id_plan) }}" method="POST">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: auto;">
+                        Comprar Plan
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- INFORMACIÓN ADICIONAL -->
+    <section class="container">
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+            <div class="card">
+                <h3>📋 Sin Contrato</h3>
+                <p>Cancela cuando quieras sin penalizaciones. Tu satisfacción es nuestra prioridad.</p>
+            </div>
+            <div class="card">
+                <h3>🎁 Primera Semana Gratis</h3>
+                <p>Prueba nuestras instalaciones durante 7 días sin compromiso antes de decidir.</p>
+            </div>
+            <div class="card">
+                <h3>👥 Trae un Amigo</h3>
+                <p>Refiere a un amigo y ambos obtienen 15% de descuento en su próxima mensualidad.</p>
+            </div>
+            <div class="card">
+                <h3>🔄 Cambio de Plan</h3>
+                <p>Puedes cambiar tu plan en cualquier momento según tus necesidades evolucionen.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 New Life Gym. Todos los derechos reservados.</p>
+        <p>Pasto, Nariño | Teléfono: (555) 123-4567</p>
+    </footer>

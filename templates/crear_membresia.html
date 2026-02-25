@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Membresía - Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="New Life Gym Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('admin_dashboard') }}">Volver al Dashboard</a></li>
+                <li><a href="{{ url_for('admin_logout') }}" style="color: var(--primary-color);">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container" style="margin-top: 2rem;">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container" style="margin-top: 3rem; max-width: 600px;">
+        <div class="card">
+            <h1 style="color: var(--primary-color); margin-bottom: 2rem;">➕ Nueva Membresía</h1>
+
+            <form method="POST" action="{{ url_for('crear_membresia') }}" class="admin-form">
+
+                <div class="form-group">
+                    <label for="id_miembro">Miembro *</label>
+                    <select id="id_miembro" name="id_miembro" required class="form-control">
+                        <option value="">Seleccionar miembro...</option>
+                        {% for miembro in miembros %}
+                        <option value="{{ miembro.id_miembro }}">{{ miembro.nombre }} — {{ miembro.email }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_plan">Plan *</label>
+                    <select id="id_plan" name="id_plan" required class="form-control">
+                        <option value="">Seleccionar plan...</option>
+                        {% for plan in planes %}
+                        <option value="{{ plan.id_plan }}">{{ plan.nombre }} — ${{ "%.2f"|format(plan.precio_mensual) }}/mes</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha_inicio">Fecha de Inicio *</label>
+                    <input type="date" id="fecha_inicio" name="fecha_inicio" required class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="meses">Duración *</label>
+                    <select id="meses" name="meses" required class="form-control">
+                        <option value="1">1 mes</option>
+                        <option value="3">3 meses</option>
+                        <option value="6">6 meses</option>
+                        <option value="12">12 meses</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Crear Membresía</button>
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Establecer la fecha de hoy como valor por defecto
+        document.getElementById('fecha_inicio').value = new Date().toISOString().split('T')[0];
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

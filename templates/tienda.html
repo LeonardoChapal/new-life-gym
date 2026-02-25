@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Suplementos - New Life Gym</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="New Life Gym Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Inicio</a></li>
+                <li><a href="{{ url_for('membresias') }}">Membresías</a></li>
+                <li><a href="{{ url_for('tienda') }}" class="active">Tienda</a></li>
+                <li><a href="{{ url_for('entrenadores_page') }}">Entrenadores</a></li>
+                <li><a href="{{ url_for('galeria') }}">Galería</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero-inner">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="{{ url_for('static', filename='videos/hero-tienda.mp4') }}" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Tienda de Suplementos</h1>
+            <p>Potencia tus resultados con productos de la más alta calidad</p>
+        </div>
+    </section>
+
+    <!-- INFORMACIÓN IMPORTANTE -->
+    <section class="container">
+        <div class="card" style="background: linear-gradient(135deg, rgba(255, 0, 0, 0.08) 0%, rgba(255, 0, 0, 0.02) 100%); text-align: center; padding: 2rem;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">📦 Recogida en Gimnasio</h3>
+            <p style="font-size: 1.1rem; color: #333;">
+                Todos los productos se recogen directamente en nuestro gimnasio.
+                Realiza tu pedido online y pasa a recogerlo en recepción en horario de 6:00 AM a 10:00 PM.
+            </p>
+        </div>
+    </section>
+
+    <!-- CATÁLOGO DE PRODUCTOS -->
+    <section class="container">
+        <h2 class="section-title">Nuestros Productos</h2>
+
+        <div class="cards-grid">
+            {% for producto in productos %}
+            <div class="card product-card">
+                <div class="product-image">
+                    {% if producto.imagen %}
+                    <img src="{{ url_for('imagen_producto', id_producto=producto.id_producto) }}"
+                         alt="{{ producto.nombre }}">
+                    {% else %}
+                    <span>{{ producto.nombre }}</span>
+                    {% endif %}
+                </div>
+
+                <span class="product-category">{{ producto.categoria }}</span>
+
+                <h3>{{ producto.nombre }}</h3>
+
+                <p class="product-description">{{ producto.descripcion }}</p>
+
+                <div class="product-price">
+                    ${{ producto.precio }}
+                </div>
+
+                {% if producto.stock %}
+                <div style="color: #4CAF50; margin-bottom: 1rem; font-size: 0.9rem;">
+                    ✓ Disponible en tienda
+                </div>
+                {% else %}
+                <div style="color: #f44336; margin-bottom: 1rem; font-size: 0.9rem;">
+                    Agotado
+                </div>
+                {% endif %}
+
+                <form action="{{ url_for('comprar_producto', producto_id=producto.id_producto) }}" method="POST">
+                    <button type="submit" class="btn" style="width: 100%;" {% if not producto.stock %}disabled{% endif %}>
+                        {% if producto.stock %}
+                        Comprar Ahora
+                        {% else %}
+                        No Disponible
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- CATEGORÍAS DE PRODUCTOS -->
+    <section class="container">
+        <h2 class="section-title">Nuestras Categorías</h2>
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">🥛</h3>
+                <h4 style="color: var(--primary-color);">Proteínas</h4>
+                <p style="font-size: 0.9rem;">Whey, Caseína, Veganas</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</h3>
+                <h4 style="color: var(--primary-color);">Pre-Entreno</h4>
+                <p style="font-size: 0.9rem;">Energía y Focus</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">🔄</h3>
+                <h4 style="color: var(--primary-color);">Recuperación</h4>
+                <p style="font-size: 0.9rem;">BCAA, Glutamina</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">💊</h3>
+                <h4 style="color: var(--primary-color);">Suplementos</h4>
+                <p style="font-size: 0.9rem;">Creatina, Pre-Workout</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">🌿</h3>
+                <h4 style="color: var(--primary-color);">Vitaminas</h4>
+                <p style="font-size: 0.9rem;">Multivitamínicos</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">🎒</h3>
+                <h4 style="color: var(--primary-color);">Accesorios</h4>
+                <p style="font-size: 0.9rem;">Shakers, Guantes, Correas</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFICIOS DE COMPRAR EN New Life Gym -->
+    <section class="container">
+        <h2 class="section-title">¿Por Qué Comprar Con Nosotros?</h2>
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+            <div class="card">
+                <h3>🏆 Productos Originales</h3>
+                <p>100% garantía de autenticidad. Trabajamos directamente con las marcas más reconocidas del mercado.</p>
+            </div>
+            <div class="card">
+                <h3>💰 Mejores Precios</h3>
+                <p>Precios competitivos y descuentos especiales para miembros Premium (15% off en todos los productos).</p>
+            </div>
+            <div class="card">
+                <h3>🚀 Disponibilidad Inmediata</h3>
+                <p>Recoge tus productos el mismo día. Sin esperas, sin envíos, directo del mostrador a tus manos.</p>
+            </div>
+            <div class="card">
+                <h3>👨‍⚕️ Asesoría Experta</h3>
+                <p>Nuestros entrenadores y nutricionistas te ayudan a elegir los suplementos ideales para tus objetivos.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFORMACIÓN NUTRICIONAL -->
+    <section class="container">
+        <div class="card" style="background: var(--card-bg); padding: 2rem;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">ℹ️ Información Importante</h3>
+            <ul style="color: #444; line-height: 2;">
+                <li>Los suplementos son complementos alimenticios, no sustituyen una dieta equilibrada</li>
+                <li>Consulta con nuestros nutricionistas antes de iniciar cualquier suplementación</li>
+                <li>Lee las etiquetas y respeta las dosis recomendadas por el fabricante</li>
+                <li>Mantén los productos en un lugar fresco y seco, fuera del alcance de los niños</li>
+                <li>Si tienes alguna condición médica, consulta a tu médico antes de consumir suplementos</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="container text-center" style="padding: 3rem 2rem;">
+        <h2 class="section-title">¿Necesitas Asesoría?</h2>
+        <p style="font-size: 1.1rem; color: #444; margin-bottom: 2rem;">
+            Nuestros expertos en nutrición deportiva están disponibles para ayudarte
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('entrenadores_page') }}" class="btn">Ver Nuestros Expertos</a>
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">Volver al Inicio</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 New Life Gym. Todos los derechos reservados.</p>
+        <p>Dirección: Av. Principal #123, Ciudad | Teléfono: (123) 456-7890</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

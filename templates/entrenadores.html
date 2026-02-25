@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestros Entrenadores - New Life Gym</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="New Life Gym Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Inicio</a></li>
+                <li><a href="{{ url_for('membresias') }}">Membresías</a></li>
+                <li><a href="{{ url_for('tienda') }}">Tienda</a></li>
+                <li><a href="{{ url_for('entrenadores_page') }}" class="active">Entrenadores</a></li>
+                <li><a href="{{ url_for('galeria') }}">Galería</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero-inner">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="{{ url_for('static', filename='videos/hero-entrenadores.mp4') }}" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Nuestro Equipo de Expertos</h1>
+            <p>Entrenadores certificados comprometidos con tu éxito</p>
+        </div>
+    </section>
+
+    <!-- PRESENTACIÓN -->
+    <section class="container">
+        <div class="card" style="text-align: center; padding: 2rem;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">🏆 Profesionales Certificados</h3>
+            <p style="font-size: 1.1rem; color: #555; line-height: 1.8;">
+                En New Life Gym contamos con un equipo de entrenadores altamente calificados y certificados
+                internacionalmente. Cada uno de ellos se especializa en diferentes áreas del fitness
+                para brindarte la mejor experiencia de entrenamiento personalizado.
+            </p>
+        </div>
+    </section>
+
+    <!-- EQUIPO DE ENTRENADORES -->
+    <section class="container">
+        <h2 class="section-title">Conoce a Nuestros Entrenadores</h2>
+
+        <div class="cards-grid">
+            {% for entrenador in entrenadores %}
+            <div class="card trainer-card">
+
+                {# ── Foto del entrenador ─────────────────────── #}
+                {% if entrenador.imagen %}
+                <img src="{{ url_for('imagen_entrenador', id_entrenador=entrenador.id_entrenador) }}"
+                     alt="{{ entrenador.nombre }}" class="trainer-image-real">
+                {% else %}
+                <div class="trainer-image">
+                    <span>{{ entrenador.nombre[0] | upper }}</span>
+                </div>
+                {% endif %}
+
+                <h3>{{ entrenador.nombre }}</h3>
+
+                <div class="trainer-specialty">{{ entrenador.especialidad }}</div>
+
+                <div class="trainer-experience">
+                    📅 Experiencia: {{ entrenador.experiencia }}
+                </div>
+
+                <div class="trainer-certifications">
+                    🎓 {{ entrenador.certificaciones }}
+                </div>
+
+                {% if entrenador.descripcion %}
+                <p style="margin-top: 1rem; color: #555;">{{ entrenador.descripcion }}</p>
+                {% endif %}
+
+                <button class="btn" style="width: 100%; margin-top: 1.5rem;"
+                        onclick="alert('Para agendar una sesión, visítanos en recepción o llama al (555) 123-4567')">
+                    Agendar Sesión
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- ESPECIALIDADES -->
+    <section class="container">
+        <h2 class="section-title">Nuestras Especialidades</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <h3>🎯 Entrenamiento Funcional</h3>
+                <p style="color: #555;">Movimientos que mejoran tu rendimiento en actividades diarias. Trabajo con peso corporal, kettlebells, TRX y más.</p>
+                <ul style="margin-top: 1rem;">
+                    <li>CrossFit y ejercicios funcionales</li>
+                    <li>Mejora de movilidad y flexibilidad</li>
+                    <li>Preparación atlética</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🧘 Yoga y Pilates</h3>
+                <p style="color: #555;">Equilibrio entre cuerpo y mente. Fortalecimiento del core, flexibilidad y reducción del estrés.</p>
+                <ul style="margin-top: 1rem;">
+                    <li>Yoga Vinyasa y Hatha</li>
+                    <li>Pilates Mat y Reformer</li>
+                    <li>Meditación y respiración</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>💪 Musculación y Fuerza</h3>
+                <p style="color: #555;">Desarrollo de masa muscular y aumento de fuerza. Programas personalizados de hipertrofia.</p>
+                <ul style="margin-top: 1rem;">
+                    <li>Rutinas de hipertrofia</li>
+                    <li>Powerlifting y fuerza máxima</li>
+                    <li>Nutrición deportiva</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🔥 HIIT y Cardio</h3>
+                <p style="color: #555;">Entrenamiento de alta intensidad para quemar grasa y mejorar tu resistencia cardiovascular.</p>
+                <ul style="margin-top: 1rem;">
+                    <li>Circuitos de alta intensidad</li>
+                    <li>Spinning y ciclismo indoor</li>
+                    <li>Programas de pérdida de grasa</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENTRENAMIENTO PERSONALIZADO -->
+    <section class="container">
+        <h2 class="section-title">Entrenamiento Personalizado</h2>
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+            <div class="card">
+                <h3>📋 Evaluación Inicial</h3>
+                <p>Análisis completo de tu condición física actual, objetivos, historial médico y limitaciones para diseñar tu plan ideal.</p>
+            </div>
+            <div class="card">
+                <h3>📝 Plan Personalizado</h3>
+                <p>Programa de entrenamiento diseñado específicamente para ti, ajustado a tus metas, disponibilidad y nivel de experiencia.</p>
+            </div>
+            <div class="card">
+                <h3>📈 Seguimiento Continuo</h3>
+                <p>Monitoreo constante de tu progreso con ajustes regulares al programa para garantizar resultados óptimos.</p>
+            </div>
+            <div class="card">
+                <h3>💬 Asesoría Nutricional</h3>
+                <p>Guía nutricional básica y recomendaciones de suplementación para complementar tu entrenamiento.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HORARIOS -->
+    <section class="container">
+        <div class="card" style="background: linear-gradient(135deg, rgba(255,0,0,0.06) 0%, rgba(255,0,0,0.01) 100%); padding: 2rem;">
+            <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 2rem;">Horarios de Atención</h2>
+            <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div style="text-align: center; padding: 1rem; background: var(--card-bg); border-radius: 8px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Lunes a Viernes</h4>
+                    <p style="color: #555;">6:00 AM - 10:00 PM</p>
+                </div>
+                <div style="text-align: center; padding: 1rem; background: var(--card-bg); border-radius: 8px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Sábados</h4>
+                    <p style="color: #555;">8:00 AM - 8:00 PM</p>
+                </div>
+                <div style="text-align: center; padding: 1rem; background: var(--card-bg); border-radius: 8px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Domingos</h4>
+                    <p style="color: #555;">9:00 AM - 6:00 PM</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 1.5rem; color: #444;">
+                📞 Agenda tu sesión llamando al (555) 123-4567 o visítanos en recepción
+            </p>
+        </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section class="container">
+        <h2 class="section-title">Lo Que Dicen Nuestros Miembros</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <p style="color: #555; font-style: italic; margin-bottom: 1rem;">
+                    "{{ nombres[2] if nombres|length > 2 else 'Nuestro entrenador' }} me ayudó a mejorar mi técnica en levantamiento y logré mis objetivos de fuerza en solo 3 meses. Excelente profesional."
+                </p>
+                <div style="color: var(--primary-color); font-weight: bold;">— Juan Pérez</div>
+                <div style="color: #999; font-size: 0.9rem;">Miembro Premium</div>
+            </div>
+            <div class="card">
+                <p style="color: #555; font-style: italic; margin-bottom: 1rem;">
+                    "Las clases con {{ nombres[0] if nombres|length > 0 else 'nuestra entrenadora' }} son increíbles. Me siento más flexible y con mucha más energía. ¡Totalmente recomendadas!"
+                </p>
+                <div style="color: var(--primary-color); font-weight: bold;">— María García</div>
+                <div style="color: #999; font-size: 0.9rem;">Miembro Básico</div>
+            </div>
+            <div class="card">
+                <p style="color: #555; font-style: italic; margin-bottom: 1rem;">
+                    "{{ nombres[1] if nombres|length > 1 else 'Mi entrenador' }} diseñó un plan perfecto para mi objetivo de ganar masa muscular. Los resultados hablan por sí solos."
+                </p>
+                <div style="color: var(--primary-color); font-weight: bold;">— Carlos López</div>
+                <div style="color: #999; font-size: 0.9rem;">Miembro Estándar</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="container text-center" style="padding: 3rem 2rem;">
+        <h2 class="section-title">¿Listo para Entrenar con Nosotros?</h2>
+        <p style="font-size: 1.2rem; color: #555; margin-bottom: 2rem;">
+            Únete hoy y recibe tu primera sesión de evaluación completamente gratis
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('membresias') }}" class="btn">Ver Membresías</a>
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">Volver al Inicio</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 New Life Gym. Todos los derechos reservados.</p>
+        <p>Pasto, Nariño | Teléfono: (555) 123-4567</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

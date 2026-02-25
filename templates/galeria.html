@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería - New Life Gym</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="New Life Gym Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Inicio</a></li>
+                <li><a href="{{ url_for('membresias') }}">Membresías</a></li>
+                <li><a href="{{ url_for('tienda') }}">Tienda</a></li>
+                <li><a href="{{ url_for('entrenadores_page') }}">Entrenadores</a></li>
+                <li><a href="{{ url_for('galeria') }}" class="active">Galería</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HEADER CON VÍDEO -->
+    <section class="hero-inner">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="{{ url_for('static', filename='videos/hero-galeria.mp4') }}" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Nuestras Instalaciones</h1>
+            <p>Conoce el espacio donde alcanzarás tus metas</p>
+        </div>
+    </section>
+
+    <!-- DESCRIPCIÓN -->
+    <section class="container">
+        <div class="card" style="text-align: center; padding: 2rem;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">🏢 Instalaciones de Primer Nivel</h3>
+            <p style="font-size: 1.1rem; color: #555; line-height: 1.8;">
+                New Life Gym cuenta con más de 1,500 m² de instalaciones equipadas con la última tecnología
+                en máquinas de ejercicio. Áreas especializadas para cardio, musculación, clases grupales,
+                zona funcional, área de estiramiento y relajación con sauna y jacuzzi.
+            </p>
+        </div>
+    </section>
+
+    <!-- GALERÍA DE FOTOS -->
+    <section class="container">
+        <h2 class="section-title">Recorre Nuestro Gimnasio</h2>
+        <div class="gallery-grid">
+            {% for imagen in imagenes %}
+            <div class="gallery-item">
+                <img src="{{ url_for('static', filename='images/' + imagen) }}"
+                     alt="Instalaciones New Life Gym"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="gallery-placeholder" style="display:none;">
+                    📷 {{ imagen }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- ÁREAS -->
+    <section class="container">
+        <h2 class="section-title">Nuestras Áreas</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <h3>💪 Zona de Musculación</h3>
+                <p style="color: #555;">Equipamiento completo de pesas libres, mancuernas de 1 a 50 kg, bancos ajustables, racks y todo lo necesario para entrenamientos de fuerza.</p>
+                <ul style="margin-top: 1rem;">
+                    <li>Barras olímpicas y discos</li>
+                    <li>Mancuernas profesionales</li>
+                    <li>Máquinas de peso integrado</li>
+                    <li>Zona de sentadillas y press</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🏃 Zona Cardiovascular</h3>
+                <p style="color: #555;">Más de 30 máquinas cardio de última generación con pantallas individuales y programas personalizados.</p>
+                <ul style="margin-top: 1rem;">
+                    <li>Caminadoras con inclinación</li>
+                    <li>Bicicletas estáticas y de spinning</li>
+                    <li>Elípticas y remos</li>
+                    <li>Escaladoras</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🎯 Zona Funcional</h3>
+                <p style="color: #555;">Espacio amplio dedicado al entrenamiento funcional con implementos especializados.</p>
+                <ul style="margin-top: 1rem;">
+                    <li>Kettlebells y medicine balls</li>
+                    <li>Sistemas TRX</li>
+                    <li>Cuerdas de batalla</li>
+                    <li>Cajas pliométricas y sleds</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🧘 Salones de Clases</h3>
+                <p style="color: #555;">Dos salones completamente equipados para clases grupales con sistema de sonido profesional.</p>
+                <ul style="margin-top: 1rem;">
+                    <li>Yoga y Pilates</li>
+                    <li>Spinning</li>
+                    <li>HIIT y CrossFit</li>
+                    <li>Zumba y baile</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🧖 Área de Relajación</h3>
+                <p style="color: #555;">Espacio exclusivo para recuperación post-entrenamiento (disponible para miembros Premium).</p>
+                <ul style="margin-top: 1rem;">
+                    <li>Sauna seco y húmedo</li>
+                    <li>Jacuzzi terapéutico</li>
+                    <li>Área de estiramiento</li>
+                    <li>Sala de masajes</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🚿 Vestidores</h3>
+                <p style="color: #555;">Vestidores amplios y modernos, siempre limpios con servicio de casilleros individuales.</p>
+                <ul style="margin-top: 1rem;">
+                    <li>Duchas con agua caliente</li>
+                    <li>Casilleros con llave</li>
+                    <li>Secadores de pelo</li>
+                    <li>Productos de higiene</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS -->
+    <section class="container">
+        <h2 class="section-title">Servicios Incluidos</h2>
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">📶</h3>
+                <h4 style="color: var(--primary-color);">Wi-Fi Gratuito</h4>
+                <p style="font-size: 0.9rem; color: #555;">Internet de alta velocidad</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">🅿️</h3>
+                <h4 style="color: var(--primary-color);">Estacionamiento</h4>
+                <p style="font-size: 0.9rem; color: #555;">Amplio y seguro</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</h3>
+                <h4 style="color: var(--primary-color);">Casilleros</h4>
+                <p style="font-size: 0.9rem; color: #555;">Seguros individuales</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">💧</h3>
+                <h4 style="color: var(--primary-color);">Agua Purificada</h4>
+                <p style="font-size: 0.9rem; color: #555;">Dispensadores gratuitos</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">🧴</h3>
+                <h4 style="color: var(--primary-color);">Toallas</h4>
+                <p style="font-size: 0.9rem; color: #555;">Servicio de toallas limpias</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">📺</h3>
+                <h4 style="color: var(--primary-color);">Entretenimiento</h4>
+                <p style="font-size: 0.9rem; color: #555;">TV en área cardio</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HORARIOS -->
+    <section class="container">
+        <div class="card" style="background: linear-gradient(135deg, rgba(255,0,0,0.06) 0%, rgba(255,0,0,0.01) 100%); padding: 2rem;">
+            <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 2rem;">Horarios de Apertura</h2>
+            <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div style="text-align: center; padding: 1.5rem; background: var(--card-bg); border-radius: 8px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1.2rem;">Lunes a Viernes</h4>
+                    <p style="color: #555; font-size: 1.3rem; font-weight: bold;">5:00 AM - 11:00 PM</p>
+                </div>
+                <div style="text-align: center; padding: 1.5rem; background: var(--card-bg); border-radius: 8px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1.2rem;">Sábados</h4>
+                    <p style="color: #555; font-size: 1.3rem; font-weight: bold;">6:00 AM - 10:00 PM</p>
+                </div>
+                <div style="text-align: center; padding: 1.5rem; background: var(--card-bg); border-radius: 8px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1.2rem;">Domingos</h4>
+                    <p style="color: #555; font-size: 1.3rem; font-weight: bold;">7:00 AM - 9:00 PM</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 1.5rem; color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">
+                ⭐ Miembros Premium: Acceso 24/7 con credencial biométrica
+            </p>
+        </div>
+    </section>
+
+    <!-- SEGURIDAD -->
+    <section class="container">
+        <h2 class="section-title">Seguridad e Higiene</h2>
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+            <div class="card">
+                <h3>🧹 Limpieza Constante</h3>
+                <p>Personal de limpieza dedicado durante todo el día. Desinfección profunda de equipos y áreas comunes cada hora.</p>
+            </div>
+            <div class="card">
+                <h3>🎥 Vigilancia 24/7</h3>
+                <p>Sistema de cámaras de seguridad en todas las áreas. Personal de seguridad en horarios nocturnos.</p>
+            </div>
+            <div class="card">
+                <h3>🚨 Equipo de Emergencia</h3>
+                <p>Personal capacitado en primeros auxilios. Desfibrilador y botiquín de emergencia disponibles.</p>
+            </div>
+            <div class="card">
+                <h3>😷 Protocolos de Salud</h3>
+                <p>Gel antibacterial en todas las áreas. Ventilación continua y filtros de aire HEPA.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="container text-center" style="padding: 3rem 2rem;">
+        <h2 class="section-title">¿Te Gustó lo que Viste?</h2>
+        <p style="font-size: 1.2rem; color: #555; margin-bottom: 2rem;">
+            Agenda una visita guiada gratuita y conoce nuestras instalaciones en persona
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('membresias') }}" class="btn">Únete Ahora</a>
+            <a href="tel:5551234567" class="btn btn-secondary">Agendar Visita</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 New Life Gym. Todos los derechos reservados.</p>
+        <p>Pasto, Nariño | Teléfono: (555) 123-4567</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

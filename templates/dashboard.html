@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - New Life Gym</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="New Life Gym Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Ver Sitio Web</a></li>
+                <li><a href="{{ url_for('admin_logout') }}" style="color: var(--primary-color); font-weight: bold;">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container" style="margin-top: 2rem;">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+        <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 3rem;">🏋️ Panel de Administración</h1>
+
+        <div class="admin-stats">
+            <div class="stat-card">
+                <div class="stat-number">{{ miembros|length }}</div>
+                <div class="stat-label">Miembros Registrados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ planes|length }}</div>
+                <div class="stat-label">Planes de Membresía</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ membresias|length }}</div>
+                <div class="stat-label">Membresías Activas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ productos|length }}</div>
+                <div class="stat-label">Productos en Tienda</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin: 3rem 0; background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(255, 0, 0, 0.05) 100%);">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Acceso Rápido</h2>
+            <div class="quick-actions">
+                <a href="{{ url_for('home') }}" class="btn-quick">VER SITIO WEB</a>
+                <a href="{{ url_for('membresias') }}" class="btn-quick">VER MEMBRESÍAS</a>
+                <a href="{{ url_for('tienda') }}" class="btn-quick">VER TIENDA</a>
+            </div>
+        </div>
+
+        <!-- GESTIÓN DE MIEMBROS -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>👥 Gestión de Miembros</h2>
+                <a href="{{ url_for('crear_miembro') }}" class="btn-admin">Nuevo Miembro</a>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Plan Actual</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for miembro in miembros %}
+                        <tr>
+                            <td>{{ miembro.id_miembro }}</td>
+                            <td>{{ miembro.nombre }}</td>
+                            <td>{{ miembro.email }}</td>
+                            <td>{{ miembro.telefono }}</td>
+                            <td>
+                                {% if miembro.plan %}
+                                    <span class="badge badge-success">{{ miembro.plan }}</span>
+                                {% else %}
+                                    <span class="badge badge-gray">Sin plan</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if miembro.estado == 'activo' %}
+                                    <span class="badge badge-success">Activo</span>
+                                {% else %}
+                                    <span class="badge badge-gray">{{ miembro.estado|capitalize }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="action-buttons">
+                                <a href="{{ url_for('editar_miembro', id_miembro=miembro.id_miembro) }}"
+                                   class="btn-action-admin btn-edit-admin">Editar</a>
+                                <form method="POST" action="{{ url_for('eliminar_miembro', id_miembro=miembro.id_miembro) }}"
+                                      style="display: inline;" onsubmit="return confirm('¿Eliminar este miembro?');">
+                                    <button type="submit" class="btn-action-admin btn-delete-admin">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- GESTIÓN DE MEMBRESÍAS -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>📋 Gestión de Membresías</h2>
+                <a href="{{ url_for('crear_membresia') }}" class="btn-admin">Nueva Membresía</a>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Miembro</th>
+                            <th>Plan</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Estado</th>
+                            <th>Monto Pagado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for membresia in membresias %}
+                        <tr>
+                            <td>{{ membresia.id_membresia }}</td>
+                            <td>{{ membresia.miembro }}</td>
+                            <td><span class="badge badge-info">{{ membresia.plan }}</span></td>
+                            <td>{{ membresia.fecha_inicio }}</td>
+                            <td>{{ membresia.fecha_fin }}</td>
+                            <td>
+                                {% if membresia.estado == 'activa' %}
+                                    <span class="badge badge-success">Activa</span>
+                                {% elif membresia.estado == 'vencida' %}
+                                    <span class="badge badge-warning">Vencida</span>
+                                {% else %}
+                                    <span class="badge badge-gray">{{ membresia.estado|capitalize }}</span>
+                                {% endif %}
+                            </td>
+                            <td>${{ "%.2f"|format(membresia.monto_pagado) }}</td>
+                            <td class="action-buttons">
+                                <a href="{{ url_for('cambiar_plan_desde_membresia', id_membresia=membresia.id_membresia) }}"
+                                   class="btn-action-admin btn-change-admin">Cambiar Plan</a>
+                                <form method="POST" action="{{ url_for('eliminar_membresia', id_membresia=membresia.id_membresia) }}"
+                                      style="display: inline;" onsubmit="return confirm('¿Cancelar esta membresía?');">
+                                    <button type="submit" class="btn-action-admin btn-delete-admin">Cancelar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- GESTIÓN DE PLANES -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>💳 Planes de Membresía</h2>
+                <a href="{{ url_for('crear_plan') }}" class="btn-admin">Nuevo Plan</a>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Precio Mensual</th>
+                            <th>Duración</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for plan in planes %}
+                        <tr>
+                            <td>{{ plan.id_plan }}</td>
+                            <td>
+                                {% if plan.imagen %}
+                                <img src="{{ url_for('imagen_plan', id_plan=plan.id_plan) }}"
+                                     alt="{{ plan.nombre }}"
+                                     style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid #e0e0e0;">
+                                {% else %}
+                                <span style="color:#bbb;font-size:1.4rem;">🖼️</span>
+                                {% endif %}
+                            </td>
+                            <td><strong>{{ plan.nombre }}</strong></td>
+                            <td>${{ "%.2f"|format(plan.precio_mensual) }}</td>
+                            <td>{{ plan.duracion_meses }} mes(es)</td>
+                            <td>
+                                {% if plan.activo %}
+                                    <span class="badge badge-success">Activo</span>
+                                {% else %}
+                                    <span class="badge badge-gray">Inactivo</span>
+                                {% endif %}
+                            </td>
+                            <td class="action-buttons">
+                                <a href="{{ url_for('editar_plan', id_plan=plan.id_plan) }}"
+                                   class="btn-action-admin btn-edit-admin">Editar</a>
+                                <form method="POST" action="{{ url_for('eliminar_plan', id_plan=plan.id_plan) }}"
+                                      style="display: inline;" onsubmit="return confirm('¿Desactivar este plan?');">
+                                    <button type="submit" class="btn-action-admin btn-delete-admin">Desactivar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- GESTIÓN DE PRODUCTOS -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>🛒 Productos de Tienda</h2>
+                <a href="{{ url_for('crear_producto') }}" class="btn-admin">Nuevo Producto</a>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.id }}</td>
+                            <td>
+                                {% if producto.tiene_imagen %}
+                                <img src="{{ url_for('imagen_producto', id_producto=producto.id) }}"
+                                     alt="{{ producto.nombre }}"
+                                     style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid #e0e0e0;">
+                                {% else %}
+                                <span style="color:#bbb;font-size:1.4rem;">🖼️</span>
+                                {% endif %}
+                            </td>
+                            <td><strong>{{ producto.nombre }}</strong></td>
+                            <td>{{ producto.categoria }}</td>
+                            <td>${{ producto.precio }}</td>
+                            <td>
+                                {% if producto.stock %}
+                                    <span class="badge badge-success">✓ Disponible</span>
+                                {% else %}
+                                    <span class="badge badge-gray">✗ Agotado</span>
+                                {% endif %}
+                            </td>
+                            <td class="action-buttons">
+                                <a href="{{ url_for('editar_producto', id_producto=producto.id) }}"
+                                   class="btn-action-admin btn-edit-admin">Editar</a>
+                                <form method="POST" action="{{ url_for('eliminar_producto', id_producto=producto.id) }}"
+                                      style="display: inline;" onsubmit="return confirm('¿Eliminar este producto?');">
+                                    <button type="submit" class="btn-action-admin btn-delete-admin">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- GESTIÓN DE ENTRENADORES -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>🏃 Entrenadores</h2>
+                <a href="{{ url_for('crear_entrenador') }}" class="btn-admin">Nuevo Entrenador</a>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Foto</th>
+                            <th>Nombre</th>
+                            <th>Especialidad</th>
+                            <th>Experiencia</th>
+                            <th>Certificaciones</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entrenador in entrenadores %}
+                        <tr>
+                            <td>{{ entrenador.id }}</td>
+                            <td>
+                                {% if entrenador.tiene_imagen %}
+                                <img src="{{ url_for('imagen_entrenador', id_entrenador=entrenador.id) }}"
+                                     alt="{{ entrenador.nombre }}"
+                                     style="width:50px;height:50px;object-fit:cover;border-radius:50%;border:2px solid var(--primary-color);">
+                                {% else %}
+                                <div style="width:50px;height:50px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#bbb;">
+                                    👤
+                                </div>
+                                {% endif %}
+                            </td>
+                            <td><strong>{{ entrenador.nombre }}</strong></td>
+                            <td>{{ entrenador.especialidad }}</td>
+                            <td>{{ entrenador.experiencia }}</td>
+                            <td>{{ entrenador.certificaciones }}</td>
+                            <td class="action-buttons">
+                                <a href="{{ url_for('editar_entrenador', id_entrenador=entrenador.id) }}"
+                                   class="btn-action-admin btn-edit-admin">Editar</a>
+                                <form method="POST" action="{{ url_for('eliminar_entrenador', id_entrenador=entrenador.id) }}"
+                                      style="display: inline;" onsubmit="return confirm('¿Eliminar este entrenador?');">
+                                    <button type="submit" class="btn-action-admin btn-delete-admin">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer style="background: #2a2a2a; color: white; text-align: center; padding: 2rem; margin-top: 4rem;">
+        <p>&copy; 2026 New Life Gym - Panel de Administración</p>
+    </footer>
+</body>
+</html>

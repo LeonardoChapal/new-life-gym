@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Life Gym - Tu Gimnasio de Confianza</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="New Life Gym Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}" class="active">Inicio</a></li>
+                <li><a href="{{ url_for('membresias') }}">Membresías</a></li>
+                <li><a href="{{ url_for('tienda') }}">Tienda</a></li>
+                <li><a href="{{ url_for('entrenadores_page') }}">Entrenadores</a></li>
+                <li><a href="{{ url_for('galeria') }}">Galería</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO CON VÍDEO -->
+    <section class="hero hero-video-section">
+        <!-- Vídeo de fondo -->
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="{{ url_for('static', filename='videos/gym-hero.mp4') }}" type="video/mp4">
+            <source src="{{ url_for('static', filename='videos/gym-hero.webm') }}" type="video/webm">
+        </video>
+
+        <!-- Overlay oscuro -->
+        <div class="hero-overlay"></div>
+
+        <!-- Contenido centrado -->
+        <div class="hero-content">
+            <div class="hero-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="New Life Gym Logo">
+            </div>
+
+            <h1>Transforma Tu Cuerpo</h1>
+            <p>El mejor gimnasio para alcanzar tus metas fitness</p>
+
+            <!-- Fila de botones centrada -->
+            <div class="hero-buttons">
+                <a href="{{ url_for('membresias') }}" class="btn btn-primary">Únete Ahora</a>
+                <a href="{{ url_for('galeria') }}"    class="btn btn-secondary">Ver Instalaciones</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRESENTACIÓN DEL GIMNASIO -->
+    <section class="container">
+        <h2 class="section-title">Bienvenido a New Life Gym</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <h3>💪 Equipamiento Moderno</h3>
+                <p>Contamos con la última tecnología en equipos de entrenamiento, desde máquinas cardiovasculares hasta pesas libres de alta calidad.</p>
+            </div>
+            <div class="card">
+                <h3>🎯 Entrenamiento Personalizado</h3>
+                <p>Nuestros entrenadores certificados te guiarán en cada paso de tu camino fitness con planes diseñados específicamente para ti.</p>
+            </div>
+            <div class="card">
+                <h3>⏰ Horarios Flexibles</h3>
+                <p>Abierto desde las 5:00 AM hasta las 11:00 PM de lunes a domingo. Membresías Premium con acceso 24/7.</p>
+            </div>
+            <div class="card">
+                <h3>🏆 Clases Grupales</h3>
+                <p>Yoga, Spinning, CrossFit, HIIT, Zumba y más. Variedad de clases para todos los niveles y preferencias.</p>
+            </div>
+            <div class="card">
+                <h3>🧖 Área de Relajación</h3>
+                <p>Sauna, jacuzzi y zona de estiramiento para una recuperación óptima después de tus entrenamientos.</p>
+            </div>
+            <div class="card">
+                <h3>🍎 Asesoría Nutricional</h3>
+                <p>Planes alimenticios personalizados y suplementación adecuada para maximizar tus resultados.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENTRENADORES DESTACADOS -->
+    <section class="container">
+        <h2 class="section-title">Nuestros Entrenadores</h2>
+        <div class="cards-grid">
+            {% for entrenador in entrenadores %}
+            <div class="card trainer-card">
+                {% if entrenador.imagen %}
+                <img src="{{ url_for('imagen_entrenador', id_entrenador=entrenador.id_entrenador) }}"
+                     alt="{{ entrenador.nombre }}" class="trainer-image-real">
+                {% else %}
+                <div class="trainer-image">
+                    <span>{{ entrenador.nombre[0] }}</span>
+                </div>
+                {% endif %}
+                <h3>{{ entrenador.nombre }}</h3>
+                <div class="trainer-specialty">{{ entrenador.especialidad }}</div>
+                <div class="trainer-experience">Experiencia: {{ entrenador.experiencia }}</div>
+                <div class="trainer-certifications">{{ entrenador.certificaciones }}</div>
+                <p>{{ entrenador.descripcion }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-2">
+            <a href="{{ url_for('entrenadores_page') }}" class="btn">Ver Todos los Entrenadores</a>
+        </div>
+    </section>
+
+    <!-- MIEMBROS ACTIVOS -->
+    <section class="container">
+        <div class="members-section">
+            <h2 class="section-title">Nuestra Comunidad Activa</h2>
+            <p class="text-center" style="color:#555; margin-bottom:2rem;">
+                Únete a {{ miembros|length }} miembros que ya están transformando sus vidas
+            </p>
+            <div class="members-list">
+                {% for miembro in miembros %}
+                <div class="member-item">
+                    <div class="member-name">{{ miembro.nombre }}</div>
+                    <div class="member-plan">Plan {{ miembro.plan }}</div>
+                    <div class="member-since">Miembro desde {{ miembro.desde }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="container text-center">
+        <h2 class="section-title">¿Listo para Empezar?</h2>
+        <p style="font-size:1.2rem; color:#777; margin-bottom:2rem;">
+            Elige el plan perfecto para ti y comienza tu transformación hoy mismo
+        </p>
+        <a href="{{ url_for('membresias') }}" class="btn" style="font-size:1.3rem; padding:1.2rem 3rem;">
+            Ver Planes de Membresía
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 New Life Gym. Todos los derechos reservados.</p>
+        <p>Dirección: Pasto, Nariño | Teléfono: (555) 123-4567</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

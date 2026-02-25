@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra Exitosa - New Life Gym</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="New Life Gym Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Inicio</a></li>
+                <li><a href="{{ url_for('membresias') }}">Membresías</a></li>
+                <li><a href="{{ url_for('tienda') }}">Tienda</a></li>
+                <li><a href="{{ url_for('entrenadores_page') }}">Entrenadores</a></li>
+                <li><a href="{{ url_for('galeria') }}">Galería</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO DE CONFIRMACIÓN -->
+    <div class="success-container">
+        <div class="success-icon">✓</div>
+        
+        <h1>¡Compra Exitosa!</h1>
+        
+        <p style="font-size: 1.3rem; color: #333; margin: 1rem 0;">
+            Tu {{ tipo }} ha sido procesada correctamente
+        </p>
+
+        <div class="success-details">
+            <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;">Detalles de tu compra</h3>
+            
+            <p style="border-bottom: 1px solid #e0e0e0; padding-bottom: 1rem; margin-bottom: 1rem;">
+                <strong style="color: var(--primary-color);">{{ tipo|title }}:</strong><br>
+                <span style="font-size: 1.2rem; color: #222;">{{ item }}</span>
+            </p>
+            
+            <p style="border-bottom: 1px solid #e0e0e0; padding-bottom: 1rem; margin-bottom: 1rem;">
+                <strong style="color: var(--primary-color);">Total:</strong><br>
+                <span style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);">${{ precio }}</span>
+            </p>
+            
+            <p style="padding: 1rem; background: rgba(255, 0, 0, 0.06); border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                <strong style="color: var(--primary-color);">📌 Importante:</strong><br>
+                <span style="color: #333;">{{ mensaje }}</span>
+            </p>
+        </div>
+
+        {% if tipo == "membresía" %}
+        <div style="max-width: 600px; margin: 2rem auto; text-align: left;">
+            <h3 style="color: var(--primary-color); text-align: center; margin-bottom: 1rem;">
+                Próximos Pasos
+            </h3>
+            <div class="card">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <style>
+                        li.steps-list::before { content: none !important; padding-left: 0 !important; }
+                        li.steps-list { padding-left: 0 !important; }
+                    </style>
+                    <li class="steps-list" style="padding: 1rem 0; border-bottom: 1px solid #e0e0e0;">
+                        <strong style="color: var(--primary-color);">1. Visita Recepción</strong><br>
+                        <span style="color: #444;">Presenta una identificación oficial para validar tu membresía</span>
+                    </li>
+                    <li class="steps-list" style="padding: 1rem 0; border-bottom: 1px solid #e0e0e0;">
+                        <strong style="color: var(--primary-color);">2. Recibe tu Credencial</strong><br>
+                        <span style="color: #444;">Te entregaremos tu credencial de acceso con chip biométrico</span>
+                    </li>
+                    <li class="steps-list" style="padding: 1rem 0; border-bottom: 1px solid #e0e0e0;">
+                        <strong style="color: var(--primary-color);">3. Evaluación Inicial</strong><br>
+                        <span style="color: #444;">Agenda tu sesión de evaluación gratuita con un entrenador</span>
+                    </li>
+                    <li class="steps-list" style="padding: 1rem 0;">
+                        <strong style="color: var(--primary-color);">4. ¡Comienza a Entrenar!</strong><br>
+                        <span style="color: #444;">Empieza tu transformación desde el primer día</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if tipo == "producto" %}
+        <div style="max-width: 600px; margin: 2rem auto; text-align: left;">
+            <h3 style="color: var(--primary-color); text-align: center; margin-bottom: 1rem;">
+                Información de Recogida
+            </h3>
+            <div class="card">
+                <p style="margin-bottom: 1rem; color: #333;">
+                    <strong style="color: var(--primary-color);">📍 Ubicación:</strong><br>
+                    Tienda del gimnasio New Life Gym<br>
+                    Av. Principal #123, Ciudad
+                </p>
+                <p style="margin-bottom: 1rem; color: #333;">
+                    <strong style="color: var(--primary-color);">🕒 Horario de recogida:</strong><br>
+                    Lunes a Viernes: 6:00 AM - 10:00 PM<br>
+                    Sábados: 8:00 AM - 8:00 PM<br>
+                    Domingos: 9:00 AM - 6:00 PM
+                </p>
+                <p style="color: #333;">
+                    <strong style="color: var(--primary-color);">📋 Qué llevar:</strong><br>
+                    Solo menciona tu nombre en la tienda del gimnasio
+                </p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- BOTONES DE ACCIÓN -->
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 3rem;">
+            {% if tipo == "membresía" %}
+            <a href="{{ url_for('entrenadores_page') }}" class="btn">Ver Entrenadores</a>
+            {% else %}
+            <a href="{{ url_for('tienda') }}" class="btn">Seguir Comprando</a>
+            {% endif %}
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">Volver al Inicio</a>
+        </div>
+
+        <!-- INFORMACIÓN DE CONTACTO -->
+        <div style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border-radius: var(--border-radius); max-width: 500px; border: 1px solid #e0e0e0;">
+            <h4 style="color: var(--primary-color); margin-bottom: 1rem;">¿Tienes preguntas?</h4>
+            <p style="color: #333; margin-bottom: 1rem;">
+                Estamos aquí para ayudarte
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; color: #333;">
+                <div>📞 Teléfono: (555) 123-4567</div>
+                <div>📧 Email: info@newlifegym.com</div>
+                <div>📍 Dirección: Pasto, Nariño</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 New Life Gym. Todos los derechos reservados.</p>
+        <p>Pasto, Nariño | Teléfono: (555) 123-4567</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
