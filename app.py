@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tu-clave-secreta-para-demo-2024'
 
 # ========== CONFIGURACIÓN NEON ==========
-DATABASE_URL = "postgresql://neondb_owner:npg_BxWG7siKAr6T@ep-weathered-fog-aiqynz6c-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+DATABASE_URL = "postgresql://neondb_owner:XXXXXXXXXXX@ep-weathered-fog-aiqynz6c-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
 def get_db_connection():
     try:
